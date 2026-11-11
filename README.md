@@ -27,7 +27,7 @@ update public.budget set budget = 800 where person = 'Ella' and season = '2026';
 ## CFO read access
 Role `cfo_xmas` exists (migration `xmas_cfo_reader_role`): SELECT on `budget` and `purchases`, UPDATE on
 `purchases.quicken_txn_id` only, nothing else (no insert/delete, no other columns, no other tables, no PIN
-table, no RPCs). Connection limit 3, 30s statement timeout. It is created **without login**.
+table, no RPCs). Connection limit 3, 30s statement timeout. It was created without login; see below.
 
 To turn it on, run once in the Supabase SQL editor with a password you choose, and store that password in
 the CFO's secret store (never in the vault or this repo):
@@ -37,3 +37,7 @@ alter role cfo_xmas with login password '<choose-a-strong-password>';
 Connect via the **Session pooler** (Dashboard → Connect) as user `cfo_xmas.mxcpjsdvdqhgutdzzggo`, database `postgres`.
 
 To revoke: `alter role cfo_xmas nologin;`
+
+Login is **on** (2026-11-11). The CFO's nightly sync (`CFO/automation/xmas_sync.py` in the Family Command
+Center, launchd `com.mcniel.cfo.xmas` at 02:30) reads its password from the macOS Keychain item `xmas-cfo-db`,
+connects over TLS pinned to Supabase's root CA, and writes Quicken matches into `quicken_txn_id`.
