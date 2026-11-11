@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14532d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Xmas Budget">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Christmas 2026 Budget</title>
+<link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+
+<!-- PIN screen -->
+<section id="lock" class="lock hidden">
+  <div class="lock-card">
+    <div class="tree">🎄</div>
+    <h1>Christmas 2026</h1>
+    <p id="lockMsg">Enter your PIN</p>
+    <input id="pinInput" type="text" class="pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" name="code" autocomplete="one-time-code" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" placeholder="••••">
+    <button id="pinBtn" class="btn-primary">Unlock</button>
+    <p id="lockErr" class="err"></p>
+  </div>
+</section>
+
+<!-- Main -->
+<main id="app" class="hidden">
+  <div id="demoBanner" class="demo hidden">Demo mode — fake data, nothing is saved</div>
+  <header class="top">
+    <h1>🎄 Christmas 2026</h1>
+    <button id="refreshBtn" class="icon-btn" aria-label="Refresh">⟳</button>
+  </header>
+
+  <section class="card hero">
+    <div class="hero-label">Left to spend</div>
+    <div class="hero-left" id="heroLeft">$0</div>
+    <div class="meter"><div class="meter-fill" id="heroFill"></div></div>
+    <div class="hero-row">
+      <span><b id="heroSpent">$0</b> spent</span>
+      <span>of <b id="heroTotal">$0</b></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Budget</h2>
+    <div id="buckets"></div>
+  </section>
+
+  <section class="card">
+    <h2>Spent on who</h2>
+    <div id="people"></div>
+  </section>
+
+  <section class="card">
+    <h2>Purchases <span class="count" id="purchaseCount"></span></h2>
+    <div id="purchases"></div>
+  </section>
+
+  <div class="spacer"></div>
+  <button id="logBtn" class="fab">＋ Log purchase</button>
+</main>
+
+<!-- Log purchase sheet -->
+<div id="sheet" class="overlay">
+  <form id="form" class="sheet" autocomplete="off" novalidate>
+    <div class="sheet-head">
+      <h2>Log purchase</h2>
+      <button type="button" class="icon-btn" id="closeSheet" aria-label="Close">✕</button>
+    </div>
+
+    <label class="field">
+      <span>Amount</span>
+      <div class="amount-wrap">
+        <span class="dollar">$</span>
+        <input id="fAmount" type="text" inputmode="decimal" placeholder="0.00">
+      </div>
+      <label class="check"><input type="checkbox" id="fReturn"> This is a return / refund</label>
+    </label>
+
+    <label class="field">
+      <span>Where</span>
+      <input id="fMerchant" list="merchantList" placeholder="Target, Amazon…">
+      <datalist id="merchantList"></datalist>
+    </label>
+
+    <div class="field">
+      <span>For who</span>
+      <div class="chips" id="whoChips"></div>
+      <input id="fRecipient" placeholder="Name">
+    </div>
+
+    <label class="field">
+      <span>What did you buy? <em class="opt">(optional)</em></span>
+      <input id="fItem" placeholder="Lego set, pajamas…" autocapitalize="sentences">
+    </label>
+
+    <div class="field">
+      <span>Budget bucket</span>
+      <div class="chips" id="bucketChips"></div>
+    </div>
+
+    <details class="more">
+      <summary>More (date, card, note)</summary>
+      <label class="field"><span>Date</span><input id="fDate" type="date"></label>
+      <label class="field"><span>Card</span><input id="fCard" list="cardList" placeholder="Card name only"><datalist id="cardList"></datalist></label>
+      <div class="field"><span>Entered by</span><div class="chips" id="byChips"></div></div>
+      <label class="field"><span>Note</span><input id="fNote" placeholder="Optional"></label>
+    </details>
+
+    <p id="formErr" class="err"></p>
+    <button type="submit" class="btn-primary" id="saveBtn">Save purchase</button>
+  </form>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js?v=5"></script>
+</body>
+</html>
